@@ -31,3 +31,9 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Binary files
+bin/*
+!bin/.gitkeep
+arraybench_*
+

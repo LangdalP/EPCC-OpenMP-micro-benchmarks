@@ -30,7 +30,7 @@ all:	syncbench schedbench taskbench
 prog: arraybench_$(IDA) 
 
 syncbench: $(SYNCOBJS)
-	$(CC) -o syncbench $(LDFLAGS) $(SYNCOBJS) $(CLOCKOBJS) $(LIBS) -lm
+	$(CC) -o bin/syncbench $(LDFLAGS) $(SYNCOBJS) $(CLOCKOBJS) $(LIBS) -lm
 
 # Rule to ensure the lower optimisation level is picked up for common.c 
 # with the Cray compiler
@@ -43,7 +43,7 @@ common_sched.o:
 	${CC} ${CFLAGS_CRAY} $(SCHEDFLAGS) $(OMPFLAG) -o common_sched.o -c common.c
 
 schedbench: $(SCHEDOBJS)
-	$(CC) -o schedbench  $(LDFLAGS) $(SCHEDOBJS) $(CLOCKOBJS) $(LIBS) -lm 
+	$(CC) -o bin/schedbench  $(LDFLAGS) $(SCHEDOBJS) $(CLOCKOBJS) $(LIBS) -lm 
 
 # Multiple header files due to multiple array sizes, makes header file arraybench_*.h
 arraybench_$(IDA).h: arraybench.h
@@ -55,13 +55,13 @@ arraybench_$(IDA).o: arraybench_$(IDA).h arraybench.c
 
 # Multiple executables due to multiple array sizes, makes exe file arraybench_*
 arraybench_$(IDA): $(ARRAYOBJS) $(CLOCKOBJS) arraybench.c
-	$(CC) $(LDFLAGS) $(ARRAYOBJS) $(CLOCKOBJS) $(LIBS) -lm -o $@ 
+	$(CC) $(LDFLAGS) $(ARRAYOBJS) $(CLOCKOBJS) $(LIBS) -lm -o bin/$@ 
 
 taskbench: $(TASKOBJS)
-	$(CC) -o taskbench $(LDFLAGS) $(OMPFLAG) $(TASKOBJS) $(CLOCKOBJS) $(LIBS) -lm 
+	$(CC) -o bin/taskbench $(LDFLAGS) $(OMPFLAG) $(TASKOBJS) $(CLOCKOBJS) $(LIBS) -lm 
 
 clean: 
-	-rm *.o syncbench schedbench arraybench_* taskbench
+	-rm bin/arraybench_* bin/syncbench bin/schedbench bin/taskbench *.o
 
 clean-all: clean 	
 	-rm OpenMPBench.* *.all
