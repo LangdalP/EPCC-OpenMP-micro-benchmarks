@@ -4,7 +4,7 @@
 OMPFLAG = -DOMPVER2 -DOMPVER3
 
 CC=clang
-CFLAGS = -fopenmp -O3 -lm
-LDFLAGS = -fopenmp -O3 -lm
+CFLAGS = -fopenmp -O3
+LDFLAGS = -fopenmp -O3
 CPP = /usr/bin/cpp
 LIBS = 
