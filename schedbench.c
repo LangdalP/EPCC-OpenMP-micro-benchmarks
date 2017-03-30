@@ -40,7 +40,7 @@
 #include "schedbench.h"
 
 // PVL: Changed iterations per thread according to epcc99 paper. Was 128.
-int cksz, itersperthr = 1024;
+int cksz, itersperthr = 4096;
 char testName[32];
 
 int main(int argc, char **argv) {
@@ -56,25 +56,25 @@ int main(int argc, char **argv) {
     /* TEST STATIC,n */
     cksz = 1;
     while (cksz <= itersperthr) {
-	sprintf(testName, "STATIC %d", cksz);
-	benchmark(testName, &teststaticn);
-	cksz *= 2;
+    sprintf(testName, "STATIC %d", cksz);
+    benchmark(testName, &teststaticn);
+    cksz *= 2;
     }
 
     /* TEST DYNAMIC,n */
     cksz = 1;
     while (cksz <= itersperthr) {
-	sprintf(testName, "DYNAMIC %d", cksz);
-	benchmark(testName, &testdynamicn);
-	cksz *= 2;
+    sprintf(testName, "DYNAMIC %d", cksz);
+    benchmark(testName, &testdynamicn);
+    cksz *= 2;
     }
 
     /* TEST GUIDED,n */
     cksz = 1;
     while (cksz <= itersperthr / nthreads) {
-	sprintf(testName, "GUIDED %d", cksz);
-	benchmark(testName, &testguidedn);
-	cksz *= 2;
+    sprintf(testName, "GUIDED %d", cksz);
+    benchmark(testName, &testguidedn);
+    cksz *= 2;
     }
 
     finalise();
@@ -86,9 +86,9 @@ int main(int argc, char **argv) {
 void refer() {
     int i, j;
     for (j = 0; j < innerreps; j++) {
-	for (i = 0; i < itersperthr; i++) {
-	    delay(delaylength);
-	}
+    for (i = 0; i < itersperthr; i++) {
+        delay(delaylength);
+    }
     }
 }
 
@@ -97,12 +97,12 @@ void teststatic() {
     int i, j;
 #pragma omp parallel private(j)
     {
-	for (j = 0; j < innerreps; j++) {
+    for (j = 0; j < innerreps; j++) {
 #pragma omp for schedule(static)
-	    for (i = 0; i < itersperthr * nthreads; i++) {
-		delay(delaylength);
-	    }
-	}
+        for (i = 0; i < itersperthr * nthreads; i++) {
+        delay(delaylength);
+        }
+    }
     }
 }
 
@@ -110,12 +110,12 @@ void teststaticn() {
     int i, j;
 #pragma omp parallel private(j)
     {
-	for (j = 0; j < innerreps; j++) {
+    for (j = 0; j < innerreps; j++) {
 #pragma omp for schedule(static,cksz)
-	    for (i = 0; i < itersperthr * nthreads; i++) {
-		delay(delaylength);
-	    }
-	}
+        for (i = 0; i < itersperthr * nthreads; i++) {
+        delay(delaylength);
+        }
+    }
     }
 }
 
@@ -123,12 +123,12 @@ void testdynamicn() {
     int i, j;
 #pragma omp parallel private(j)
     {
-	for (j = 0; j < innerreps; j++) {
+    for (j = 0; j < innerreps; j++) {
 #pragma omp for schedule(dynamic,cksz)
-	    for (i = 0; i < itersperthr * nthreads; i++) {
-		delay(delaylength);
-	    }
-	}
+        for (i = 0; i < itersperthr * nthreads; i++) {
+        delay(delaylength);
+        }
+    }
     }
 }
 
@@ -136,11 +136,11 @@ void testguidedn() {
     int i, j;
 #pragma omp parallel private(j)
     {
-	for (j = 0; j < innerreps; j++) {
+    for (j = 0; j < innerreps; j++) {
 #pragma omp for schedule(guided,cksz)
-	    for (i = 0; i < itersperthr * nthreads; i++) {
-		delay(delaylength);
-	    }
-	}
+        for (i = 0; i < itersperthr * nthreads; i++) {
+        delay(delaylength);
+        }
+    }
     }
 }
