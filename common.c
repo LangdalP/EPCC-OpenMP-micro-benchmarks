@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 #include <omp.h>
 
 #include "common.h"
@@ -358,13 +359,11 @@ void array_delay(int delaylength, double a[1]) {
 // Re-enable optimisation for remainder of source. 
 #pragma _CRI opt
 
+// Linux-specific, but much more precise
 double getclock() {
-    double time;
-    // Returns a value in seconds of the time elapsed from some arbitrary,
-    // but consistent point.
-    double omp_get_wtime(void);
-    time = omp_get_wtime();
-    return time;
+    struct timespec nowtime;
+    clock_gettime(CLOCK_MONOTONIC, &nowtime);
+    return nowtime.tv_sec + 1.0e-9 * nowtime.tv_nsec;
 }
 
 int returnfalse() {
