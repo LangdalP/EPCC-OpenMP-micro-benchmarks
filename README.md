@@ -16,7 +16,7 @@ A low iteration count in the parallel loop can lead to measuring parallel for-lo
 A long delay time can make the inner loops take a while. The time spent on scheduling is orders of magnitude less. Because the benchmark measures overhead as `avg_test_time - avg_reference_time`, this leads to the scheduling overheads getting "drowned out" by the time spent waiting.
 
 #### Use one thread per physical core
-If your system supports simultaneous multithreading (e.g. hyper-threading), you risk having logical threads competing for resources. In my experiments, the parallel tests took 40% than the reference test when using 8 threads on my quad-core Intel Core i7-2600K.
+If your system supports simultaneous multithreading (e.g. hyper-threading), you risk having logical threads competing for resources. In my experiments, the parallel tests took 40% longer than the reference test when using 8 threads on my quad-core Intel Core i7-2600K.
 
 #### Example parameters
 The following parameters gave good results on my system:
