@@ -5,12 +5,26 @@ If you just want the original, you can download it here:
 https://www.epcc.ed.ac.uk/research/computing/performance-characterisation-and-benchmarking/epcc-openmp-micro-benchmark-suite
 
 ## Some notes on parameter tuning for `schedbench`
+Exactly what is being measured is a function of the parameters. Bad parameters can result in measuring the wrong thing. If you want to isolate scheduling overheads, you should check if your results looks similar to the results in [1]. In particular, you should check that the overheads for the `dynamic` schedule decreases as the chunk size goes from 1, to 2, to 4.
 
-To truly measure the overheads of for-loop scheduling, it is important that most of the time is spent inside the parallel for-loop. and that not too many loops are created. The default parameters had a tendency to create too many parallel for-loops, which meant that the overhead of creating loops dominated the overhead of chunk scheduling. To check if this is happening to you, one method is to see if there is any significant difference between the overheads measured for dynamic loops with chunk-size 1 and 2. The loop with chunk-size 1 should consistently get a higher overhead, as seen in the results of [1].
+Here are some pointers to achieve this:
 
-If you believe that your current parameters do not allow accurate measurements of scheduling overheads, you can try:
-- Increasing `itersperthr`, found in `schedbench.c` and rebuild
-- Use a lower delay time via the command line argument `--delay-time`. For instance, try 0.1.
+#### Avoid a low iteration count
+A low iteration count in the parallel loop can lead to measuring parallel for-loop overhead.
+
+#### Avoid a long delay time
+A long delay time can make the inner loops take a while. The time spent on scheduling is orders of magnitude less. Because the benchmark measures overhead as `avg_test_time - avg_reference_time`, this leads to the scheduling overheads getting "drowned out" by the time spent waiting.
+
+#### Use one thread per physical core
+If your system supports simultaneous multithreading (e.g. hyper-threading), you risk having logical threads competing for resources. In my experiments, the parallel tests took 40% than the reference test when using 8 threads on my quad-core Intel Core i7-2600K.
+
+#### Example parameters
+The following parameters gave good results on my system:
+
+- `itersperthr = 8192` (must be changed in `schedbench.c`)
+- `--outer-repetitions 50` (recommended in epcc paper[1])
+- `--delay-time 0.01`
+- `--test-time 2000`
 
 # References
 - [1] Bull, J. Mark. "Measuring synchronisation and scheduling overheads in OpenMP." *Proceedings of First European Workshop on OpenMP*. Vol. 8. 1999.

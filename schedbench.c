@@ -39,13 +39,14 @@
 #include "common.h"
 #include "schedbench.h"
 
-// PVL: Changed iterations per thread according to epcc99 paper. Was 128.
-int cksz, itersperthr = 4096;
+int cksz, itersperthr = 8192;
 char testName[32];
 
 int main(int argc, char **argv) {
 
     init(argc, argv);
+    // Also print itersperthr
+    printf("\t%d iterations per threads\n", itersperthr);
 
     /* GENERATE REFERENCE TIME */
     reference("reference time", &refer);
