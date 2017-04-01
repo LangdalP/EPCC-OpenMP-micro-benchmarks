@@ -5,7 +5,7 @@ If you just want the original, you can download it here:
 https://www.epcc.ed.ac.uk/research/computing/performance-characterisation-and-benchmarking/epcc-openmp-micro-benchmark-suite
 
 ## Some notes on parameter tuning for `schedbench`
-Exactly what is being measured is a function of the parameters. Bad parameters can result in measuring the wrong thing. If you want to isolate scheduling overheads, you should check if your results looks similar to the results in [1]. In particular, you should check that the overheads for the `dynamic` schedule decreases as the chunk size goes from 1, to 2, to 4.
+Exactly what is being measured is a function of the parameters. Bad parameters can result in measuring the wrong thing. If you are unsure whether you have isolated scheduling overheads, verify that your results look similar to the results in [1]. In particular, you should check that the overheads for the `dynamic` schedule decreases as the chunk size goes from 1, to 2, to 4.
 
 Here are some pointers to achieve this:
 
