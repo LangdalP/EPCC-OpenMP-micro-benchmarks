@@ -1,4 +1,4 @@
-# EPCC-OpenMP-micro-benchmarks
+# EPCC OpenMP micro-benchmark suite
 A fork of the EPCC OpenMP micro-benchmark suite with some improvements
 
 If you just want the original, you can download it here:
