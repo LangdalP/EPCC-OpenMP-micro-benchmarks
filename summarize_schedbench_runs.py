@@ -35,7 +35,7 @@ class AggregatedScheduleResult:
 
     def __str__(self):
         name_adjusted = self.name.ljust(15)
-        return "{} : avg = {:8.2f} , median = {:8.2f}".format(name_adjusted, self.average(), self.median())
+        return "{} : avg = {:8.2f} , median = {:8.2f} ({} runs)".format(name_adjusted, self.average(), self.median(), len(self.overheads))
 
 def extract_schedule(line):
     words = line.split()
