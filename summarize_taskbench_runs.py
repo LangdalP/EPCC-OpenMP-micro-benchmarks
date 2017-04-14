@@ -74,9 +74,10 @@ def is_number(s):
     except ValueError:
         return False
 
-def process(fname):
+def process(fname, print_csv):
     outer_repetitions = find_outer_repetitions(fname)
-    print("Using outer_repetitions = {}".format(outer_repetitions))
+    if not print_csv:
+        print("Using outer_repetitions = {}".format(outer_repetitions))
     max_outliers = outer_repetitions / 5
     overhead_results = OrderedDict()
     with open(fname) as f:
@@ -105,16 +106,21 @@ def process(fname):
                 overhead = -1337
     return overhead_results
 
-def print_results(results):
+def print_results(results, as_csv):
     for key, value in results.iteritems():
-        key_adjusted = str(key).ljust(25)
-        print("{} : {}".format(key_adjusted, str(value)))
-
+        if as_csv:
+            print("{},{}".format(key, value.median()))
+        else:
+            key_adjusted = str(key).ljust(25)
+            print("{} : {}".format(key_adjusted, str(value)))
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--csv", help="print results as csv",
+    action="store_true", default=False)
 parser.add_argument("filename")
 args = parser.parse_args()
-
 fname = args.filename
-results = process(fname)
-print_results(results)
+print_csv = args.csv
+
+results = process(fname, print_csv)
+print_results(results, print_csv)

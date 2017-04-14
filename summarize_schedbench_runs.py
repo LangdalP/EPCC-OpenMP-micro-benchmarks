@@ -37,6 +37,9 @@ class AggregatedScheduleResult:
         name_adjusted = self.name.ljust(15)
         return "{} : avg = {:8.2f} , median = {:8.2f} ({} runs)".format(name_adjusted, self.average(), self.median(), len(self.overheads))
 
+    def as_csv_median(self):
+        return "{},{}".format(self.name, self.median())
+
 def extract_schedule(line):
     words = line.split()
     schedule = ''
@@ -75,9 +78,10 @@ def is_number(s):
     except ValueError:
         return False
 
-def process(fname):
+def process(fname, print_csv):
     outer_repetitions = find_outer_repetitions(fname)
-    print("Using outer_repetitions = {}".format(outer_repetitions))
+    if not print_csv:
+        print("Using outer_repetitions = {}".format(outer_repetitions))
     max_outliers = outer_repetitions / 5
     overhead_results = OrderedDict()
     with open(fname) as f:
@@ -106,15 +110,21 @@ def process(fname):
                 overhead = -1337
     return overhead_results
 
-def print_results(results):
+def print_results(results, as_csv):
     for aggr_result in results.values():
-        print(aggr_result)
+        if as_csv:
+            print(aggr_result.as_csv_median())
+        else:
+            print(aggr_result)
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--csv", help="print results as csv",
+    action="store_true", default=False)
 parser.add_argument("filename")
 args = parser.parse_args()
-
 fname = args.filename
-results = process(fname)
-print_results(results)
+print_csv = args.csv
+
+results = process(fname, print_csv)
+print_results(results, print_csv)
