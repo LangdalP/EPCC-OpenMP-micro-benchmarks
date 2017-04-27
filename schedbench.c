@@ -39,7 +39,7 @@
 #include "common.h"
 #include "schedbench.h"
 
-int cksz, itersperthr = 8192;
+int cksz, itersperthr = 4096;
 char testName[32];
 
 int main(int argc, char **argv) {
